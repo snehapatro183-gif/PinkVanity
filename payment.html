@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment</title>
+
+<style>
+body{
+  font-family:Poppins;
+  background:#fff6f7;
+  margin:0;
+}
+
+.container{
+  max-width:500px;
+  margin:auto;
+  padding:30px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  margin-bottom:20px;
+}
+
+.option{
+  border:1px solid #ddd;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:15px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.option:hover{
+  border-color:#ff758c;
+}
+
+.active{
+  border:2px solid #ff758c;
+}
+
+img{
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Payment Method</h2>
+
+<div class="card">
+
+  <div class="option" onclick="select(this,'upi')">
+    <strong>Scan & Pay (UPI)</strong>
+    <br>
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi-demo">
+  </div>
+
+  <div class="option" onclick="select(this,'cod')">
+    <strong>Cash on Delivery</strong>
+  </div>
+
+</div>
+
+<button onclick="next()">Place Order</button>
+
+</div>
+
+<script>
+let method="";
+
+function select(el,type){
+  document.querySelectorAll(".option").forEach(o=>o.classList.remove("active"));
+  el.classList.add("active");
+  method=type;
+}
+
+function next(){
+  if(!method){
+    alert("Select payment method ❗");
+    return;
+  }
+
+  localStorage.setItem("paymentMethod", method);
+  window.location.href="success.html";
+}
+</script>
+
+</body>
+</html>

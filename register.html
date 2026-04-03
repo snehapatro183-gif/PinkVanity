@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register</title>
+
+<style>
+body{
+  font-family:Poppins;
+  background:#fff6f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  width:300px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  background:#ff758c;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Register</h2>
+
+  <input id="name" placeholder="Name">
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="register()">Register</button>
+</div>
+
+<script>
+function register(){
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  let user = {name,email,password};
+
+  localStorage.setItem("user", JSON.stringify(user));
+
+  alert("Registration Successful 🎉");
+
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

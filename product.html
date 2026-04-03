@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Product</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins;
+  background:#fff6f7;
+}
+
+/* BACK */
+.back{
+  margin:20px;
+  cursor:pointer;
+  display:inline-block;
+  font-weight:500;
+}
+
+/* LAYOUT */
+.container{
+  display:flex;
+  gap:40px;
+  padding:40px;
+  flex-wrap:wrap;
+}
+
+/* IMAGE */
+.image-box{
+  flex:1;
+}
+
+.image-box img{
+  width:100%;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* DETAILS */
+.details{
+  flex:1;
+}
+
+.details h1{
+  font-family:'Playfair Display';
+  margin-bottom:10px;
+}
+
+.price{
+  font-size:28px;
+  margin:10px 0;
+  font-weight:600;
+}
+
+/* SIZE */
+.sizes{
+  display:flex;
+  gap:10px;
+  margin:15px 0;
+  flex-wrap:wrap;
+}
+
+.size{
+  padding:10px 15px;
+  border:1px solid #ccc;
+  cursor:pointer;
+  border-radius:6px;
+  transition:0.2s;
+}
+
+.size:hover{
+  border-color:#ff758c;
+}
+
+.size.active{
+  background:black;
+  color:white;
+}
+
+/* BUTTON */
+button{
+  margin-top:15px;
+  padding:15px;
+  width:100%;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+  border-radius:8px;
+}
+
+/* Primary */
+.add-btn{
+  background:black;
+  color:white;
+}
+
+/* Buy */
+.buy-btn{
+  background:#ff758c;
+  color:white;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .container{
+    flex-direction:column;
+    padding:20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="back" onclick="goBack()">← Back</div>
+
+<div class="container">
+
+  <div class="image-box">
+    <img id="productImg" src="">
+  </div>
+
+  <div class="details">
+    <h1 id="productName"></h1>
+    <div class="price" id="productPrice"></div>
+
+    <p>MRP inclusive of all taxes</p>
+
+    <h3>Select Size</h3>
+    <div class="sizes" id="sizeBox"></div>
+
+    <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+    <button class="buy-btn" onclick="buyNow()">Buy Now</button>
+  </div>
+
+</div>
+
+<script>
+
+/* LOAD AFTER PAGE READY */
+window.onload = function(){
+
+  let product = JSON.parse(localStorage.getItem("selectedProduct"));
+
+  if(!product){
+    alert("No product selected ❌");
+    window.location.href = "index.html";
+    return;
+  }
+
+  /* SET DATA */
+  document.getElementById("productImg").src = product.img || "https://via.placeholder.com/400";
+  document.getElementById("productName").innerText = product.name;
+  document.getElementById("productPrice").innerText = "₹" + product.price;
+
+  /* SIZES */
+  let sizes = ["XS","S","M","L","XL","XXL"];
+  let sizeBox = document.getElementById("sizeBox");
+
+  sizes.forEach(s=>{
+    let div = document.createElement("div");
+    div.className="size";
+    div.innerText=s;
+
+    div.onclick=()=>{
+      document.querySelectorAll(".size").forEach(el=>el.classList.remove("active"));
+      div.classList.add("active");
+    }
+
+    sizeBox.appendChild(div);
+  });
+
+}
+
+/* BACK */
+function goBack(){
+  window.history.back();
+}
+
+/* GET SELECTED SIZE */
+function getSelectedSize(){
+  let active = document.querySelector(".size.active");
+  return active ? active.innerText : null;
+}
+
+/* ADD TO CART */
+function addToCart(){
+
+  let product = JSON.parse(localStorage.getItem("selectedProduct"));
+  let selectedSize = getSelectedSize();
+
+  if(!selectedSize){
+    alert("Please select a size ❗");
+    return;
+
+    window.location.href = "index.html";
+  }
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  product.size = selectedSize;
+
+  cart.push(product);
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  alert("Added to cart 🛒");
+}
+
+/* BUY NOW */
+function buyNow(){
+
+  let product = JSON.parse(localStorage.getItem("selectedProduct"));
+  let selectedSize = getSelectedSize();
+
+  if(!selectedSize){
+    alert("Please select a size ❗");
+    return;
+  }
+
+  product.size = selectedSize;
+
+  localStorage.setItem("checkoutItem", JSON.stringify(product));
+
+  window.location.href = "checkout.html";
+}
+
+</script>
+
+</body>
+</html>

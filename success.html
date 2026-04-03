@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Order Confirmed</title>
+
+<style>
+body{
+  font-family:Poppins;
+  background:#fff6f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  text-align:center;
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.tick{
+  font-size:70px;
+  color:#4CAF50;
+}
+
+button{
+  margin-top:20px;
+  padding:12px 20px;
+  background:#ff758c;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <div class="tick">✔</div>
+  <h2>Order Confirmed</h2>
+  <p>Expected delivery within 7 days 🚚</p>
+
+  <button onclick="goHome()">Continue Shopping</button>
+</div>
+
+<script>
+function goHome(){
+  window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>

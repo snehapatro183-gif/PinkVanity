@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GST Invoicing App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="brandIntro">
+  <h1>PINK VANITY</h1>
+</div>
+
+<div id="loginBox">
+  <h2>Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="loginMsg"></p>
+</div>
+
+<div id="app" class="hidden">
+
+<header>
+  <h1><b>PINK VANITY</b></h1>
+</header>
+
+<nav class="navbar">
+
+<div class="nav-left">
+  <button onclick="showSection('dashboard')">Dashboard</button>
+  <button onclick="showSection('products')">Products</button>
+  <button onclick="showSection('customers')">Customers</button>
+  <button onclick="showSection('invoice')">Invoice</button>
+ </div>
+
+<div class="nav-right">
+
+  <input type="text" placeholder="Search..." class="nav-search">
+
+  <div class="profile">
+    👤 Admin
+  </div>
+
+  <div class="menu">
+    <button class="menu-btn" onclick="toggleMenu()">⋮</button>
+
+    <div id="menuDropdown" class="menu-dropdown hidden">
+      <button onclick="logout()">Logout</button>
+    </div>
+
+  </div>
+
+</div>
+
+</nav>
+
+<div class="container">
+
+<div id="dashboard" class="card">
+
+  <div class="admin-hero">
+    <h2>Welcome Admin</h2>
+    <p>Manage your Pink Vanity store</p>
+  </div>
+
+  <h2>Dashboard</h2>
+  <p>Total Products: <span id="totalProducts">0</span></p>
+  <p>Total Customers: <span id="totalCustomers">0</span></p>
+  <p>Total Invoices: <span id="totalInvoices">0</span></p>
+  <p><b>Total Sales: <span id="totalSales">0</span></b></p>
+  <canvas id="dashboardChart" height="100"></canvas>
+
+</div>
+
+<div id="products" class="card hidden">
+  <h2>Add Product</h2>
+  <input id="pname" placeholder="Name"><br>
+  <input id="pprice" type="number" placeholder="Price"><br>
+  <input id="pgst" type="number" placeholder="GST %"><br>
+  <input id="pimage" placeholder="Image URL"><br>
+  <button onclick="addProduct()">Add</button>
+
+<script>
+function addProduct(){
+  const name = document.getElementById("name").value;
+  const price = document.getElementById("price").value;
+  const gst = document.getElementById("gst").value;
+  const image = document.getElementById("image").value;
+
+  fetch("http://localhost:3000/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name: name,
+      price: price,
+      gst: gst,
+      image: image
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("Product Added Successfully");
+    console.log(data);
+  })
+  .catch(err => console.error(err));
+}
+</script>
+
+  <table id="productTable">
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>GST %</th>
+      <th>Final Price</th>
+    </tr>
+  </table>
+</div>
+
+<div id="customers" class="card hidden">
+  <h2>Add Customer</h2>
+  <input id="cname" placeholder="Name"><br>
+  <input id="cphone" placeholder="Phone"><br>
+  <input id="cemail" placeholder="Email"><br>
+  <button onclick="addCustomer()">Add</button>
+
+  <table id="customerTable"></table>
+</div>
+
+<div id="invoice" class="card hidden">
+  <h2>Invoice</h2>
+
+  <select id="invoiceCustomer"></select><br>
+  <select id="invoiceProduct"></select><br>
+  <input id="qty" type="number" placeholder="Qty">
+
+  <button onclick="addToInvoice()">Add Item</button>
+
+  <table id="invoiceTable"></table>
+
+  <p>Subtotal: ₹<span id="subTotal">0</span></p>
+  <p>GST: ₹<span id="gstTotal">0</span></p>
+  <p>Total: ₹<span id="grandTotal">0</span></p>
+
+  <button onclick="saveInvoice()">Save</button>
+  <button onclick="printInvoice()">Print</button>
+</div>
+
+<div id="printInvoiceArea" class="print-invoice hidden">
+
+  <div class="invoice-header">
+    <h1>PINK VANITY</h1>
+    <p>Kamapalli, Berhampur, Odisha</p>
+  </div>
+
+  <div class="invoice-meta">
+    <p><b>Invoice No:</b> <span id="pInvoiceNo"></span></p>
+    <p><b>Date:</b> <span id="pInvoiceDate"></span></p>
+  </div>
+
+  <div class="invoice-customer">
+    <p><b>Customer Name:</b> <span id="pCustomerName"></span></p>
+    <p><b>Phone:</b> <span id="pCustomerPhone"></span></p>
+  </div>
+
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>GST %</th>
+        <th>Qty</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody id="pInvoiceItems"></tbody>
+  </table>
+
+  <div class="invoice-total">
+    <p>Subtotal: ₹<span id="pSubTotal"></span></p>
+    <p>GST: ₹<span id="pGST"></span></p>
+    <h3>Grand Total: ₹<span id="pGrandTotal"></span></h3>
+  </div>
+
+  <div class="invoice-footer">
+    <p>For <b>PINK VANITY</b></p>
+    <br>
+    <p>Authorised Signatory</p>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

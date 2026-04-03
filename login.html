@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login</title>
+
+<style>
+body{
+  font-family:Poppins;
+  background:#fff6f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  width:300px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.admin-btn{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border:1px solid #ff758c;
+  background:white;
+  color:#ff758c;
+  border-radius:6px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.admin-btn:hover{
+  background:#ff758c;
+  color:white;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:1px solid #ccc;
+  border-radius:6px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  background:#ff758c;
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.link{
+  margin-top:10px;
+  text-align:center;
+  cursor:pointer;
+  color:#ff758c;
+}
+
+.admin-link{
+  display:block;
+  text-align:center;
+  margin-top:15px;
+  color:#000000;
+  cursor:pointer;
+  font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Login</h2>
+
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <div class="link" onclick="goRegister()">New? Click here</div>
+  <div class="admin-link" onclick="goAdmin()"><b>ADMIN?</b></div>
+</div>
+
+<script>
+function login(){
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
+
+  let user = JSON.parse(localStorage.getItem("user"));
+
+  if(user && user.email === email && user.password === password){
+    alert("Login Successful ✅");
+    window.location.href = "index.html";
+  }else{
+    alert("Invalid credentials ❌");
+  }
+}
+
+function goRegister(){
+  window.location.href = "register.html";
+}
+
+function goAdmin(){
+  window.location.href = "../PINK VANITY/index.html";
+}
+
+</script>
+
+</body>
+</html>
